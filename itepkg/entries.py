@@ -30,6 +30,9 @@ class _FSEntry:
                 little=True)
         return _FSEntry(filename), b
 
+class DirectoryEntry(_FSEntry):
+    pass
+
 class FileEntry(_FSEntry):
 
     def __init__(self, filename, contents):
