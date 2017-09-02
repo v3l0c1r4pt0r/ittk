@@ -66,7 +66,7 @@ class MemoryEntry(GenericEntry):
     def from_bytes(b):
         address, b = uint32.from_bytes(b, little=True)
         length, b = uint32.from_bytes(b, little=True)
-        content, b = b[:length]. b[length:]
+        content, b = b[:length.integer], b[length.integer:]
         return MemoryEntry(address, content), b
 
 
