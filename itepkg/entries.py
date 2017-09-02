@@ -11,9 +11,9 @@ class Entry(IntEnum):
     Directory = 0x05
     File = 0x06
 
-entry_types = {Entry.End: EndEntry, Entry.Memory: MemoryEntry, Entry.Unknown:
-        UnknownEntry, Entry.Directory: DirectoryEntry,
-        Entry.File: FileEntry}
+    def from_bytes(b):
+        entry, b = uint32.from_bytes(b, little=True)
+        return Entry(entry.integer), b
 
 class GenericEntry:
 
@@ -153,3 +153,7 @@ class FileEntry(_FSEntry):
         contents, b = vector.from_bytes(0, FileEntry.max32, bytes, b,
                 little=True)
         return FileEntry(filename, contents), b
+
+entry_types = {Entry.End: EndEntry, Entry.Memory: MemoryEntry, Entry.Unknown:
+        UnknownEntry, Entry.Directory: DirectoryEntry,
+        Entry.File: FileEntry}
