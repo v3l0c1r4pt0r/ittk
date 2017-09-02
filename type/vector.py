@@ -85,7 +85,7 @@ class vector:
         b = b[lw:]
         if length == 0:
             return vector(floor, ceiling, eltype), b
-        obj = vector(floor, ceiling, eltype)
+        obj = vector(floor, ceiling, eltype, little)
         rest = b[length:]
         b = b[:length]
         while len(b) > 0:

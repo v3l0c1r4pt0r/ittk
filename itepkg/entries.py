@@ -106,7 +106,7 @@ class _FSEntry(GenericEntry):
         if isinstance(filename, vector):
             self.filename = filename
         else:
-            self.filename = vector(0, FileEntry.max32, bytes, filename,
+            self.filename = vector(0, _FSEntry.max32, bytes, filename,
                     little=True)
 
     def __bytes__(self):
