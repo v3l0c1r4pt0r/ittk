@@ -1,9 +1,27 @@
 #!/usr/bin/env python3
 # classes for entry serialization
+from enum import IntEnum
 from type.uint32 import uint32
 from type.vector import vector
 
-class EndEntry:
+class Entry(IntEnum):
+    End = 0x00
+    Memory = 0x03
+    Unknown = 0x04
+    Directory = 0x05
+    File = 0x06
+
+entry_types = {Entry.End: EndEntry, Entry.Memory: MemoryEntry, Entry.Unknown:
+        UnknownEntry, Entry.Directory: DirectoryEntry,
+        Entry.File: FileEntry}
+
+class GenericEntry:
+
+    def __init__(self):
+        raise Exception('Cannot instantiate GenericEntry')
+
+
+class EndEntry(GenericEntry):
 
     def __init__(self):
         pass
@@ -21,7 +39,7 @@ class EndEntry:
         return EndEntry, b
 
 
-class MemoryEntry:
+class MemoryEntry(GenericEntry):
 
     def __init__(self, address, content):
         if isinstance(address, uint32):
@@ -52,7 +70,7 @@ class MemoryEntry:
         return MemoryEntry(address, content), b
 
 
-class UnknownEntry:
+class UnknownEntry(GenericEntry):
 
     def __init__(self, unknown1, unknown2):
         if isinstance(unknown1, uint32):
@@ -80,7 +98,7 @@ class UnknownEntry:
         return UnknownEntry(unknown1, unknown2), b
 
 
-class _FSEntry:
+class _FSEntry(GenericEntry):
 
     max32 = 256 ** 4 - 1
 
