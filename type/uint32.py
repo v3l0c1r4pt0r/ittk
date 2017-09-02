@@ -20,6 +20,10 @@ class uint32:
     def __len__(self):
         return len(bytes(self))
 
-    def from_bytes(b):
-        integer, = struct.unpack("%sI" % self._endian, b[:4])
+    def from_bytes(b, little=False):
+        if little:
+            _endian = '<'
+        else:
+            _endian = '>'
+        integer, = struct.unpack("%sI" % _endian, b[:4])
         return uint32(integer), b[4:]
