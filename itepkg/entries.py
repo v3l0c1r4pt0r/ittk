@@ -20,6 +20,7 @@ class EndEntry:
     def from_bytes(b):
         return EndEntry, b
 
+
 class MemoryEntry:
 
     def __init__(self, address, content):
@@ -50,6 +51,7 @@ class MemoryEntry:
         content, b = b[:length]. b[length:]
         return MemoryEntry(address, content), b
 
+
 class UnknownEntry:
 
     def __init__(self, unknown1, unknown2):
@@ -76,6 +78,7 @@ class UnknownEntry:
         unknown1, b = uint32.from_bytes(b, little=True)
         unknown2, b = uint32.from_bytes(b, little=True)
         return UnknownEntry(unknown1, unknown2), b
+
 
 class _FSEntry:
 
@@ -104,8 +107,10 @@ class _FSEntry:
                 little=True)
         return _FSEntry(filename), b
 
+
 class DirectoryEntry(_FSEntry):
     pass
+
 
 class FileEntry(_FSEntry):
 
