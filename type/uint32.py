@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import struct
+
+class uint32:
+
+    def __init__(self, integer, little=False):
+        self.little = little
+        if little:
+            self._endian = '<'
+        else:
+            self._endian = '>'
+        self.integer = integer
+
+    def __bytes__(self):
+        return struct.pack("%sI" % self._endian, int(self.integer))
+
+    def __str__(self):
+        return "%d" % self.integer
+
+    def __len__(self):
+        return len(bytes(self))
+
+    def from_bytes(b):
+        integer, = struct.unpack("%sI" % self._endian, b[:4])
+        return uint32(integer), b[4:]
