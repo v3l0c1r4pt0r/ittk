@@ -3,6 +3,23 @@
 from type.uint32 import uint32
 from type.vector import vector
 
+class EndEntry:
+
+    def __init__(self):
+        pass
+
+    def __bytes__(self):
+        return b''
+
+    def __str__(self):
+        return '{}'
+
+    def __len__(self):
+        return 0
+
+    def from_bytes(b):
+        return EndEntry, b
+
 class MemoryEntry:
 
     def __init__(self, address, content):
