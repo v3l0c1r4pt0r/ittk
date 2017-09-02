@@ -3,6 +3,33 @@
 from type.uint32 import uint32
 from type.vector import vector
 
+class UnknownEntry:
+
+    def __init__(self, unknown1, unknown2):
+        if isinstance(unknown1, uint32):
+            self.unknown1 = unknown1
+        else:
+            self.unknown1 = uint32(unknown1, little=True)
+
+        if isinstance(unknown2, uint32):
+            self.unknown2 = unknown2
+        else:
+            self.unknown2 = uint32(unknown2, little=True)
+
+    def __bytes__(self):
+        return bytes(self.unknown1) + bytes(self.unknown2)
+
+    def __str__(self):
+        return '{unknown1 = %s, unknown2 = %s}' % (self.unknown1, self.unknown2)
+
+    def __len__(self):
+        return len(bytes(self))
+
+    def from_bytes(b):
+        unknown1, b = uint32.from_bytes(b, little=True)
+        unknown2, b = uint32.from_bytes(b, little=True)
+        return UnknownEntry(unknown1, unknown2), b
+
 class _FSEntry:
 
     max32 = 256 ** 4 - 1
