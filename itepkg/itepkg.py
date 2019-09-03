@@ -56,4 +56,4 @@ class ITEPKG:
         checksum, b = uint32.from_bytes(b)
         obj.checksum = checksum
 
-        return obj
+        return obj, b
