@@ -5,6 +5,31 @@ import itepkg.itepkg
 import os
 import sys
 from enum import Enum
+from itepkg.entries import Entry
+
+def print_smedia(entry):
+    """Prepare string for SMEDIA chunk of ITEPKG file"""
+    return "SMEDIA({})".format(hex(entry.address.integer))
+
+def print_dir(entry):
+    """Prepare string for directory chunk of ITEPKG file"""
+    return "Dir('{}')".format(entry.filename.array[0].decode('utf-8'))
+
+def print_file(entry):
+    """Prepare string for file chunk of ITEPKG file"""
+    return "File('{}')".format(entry.filename.array[0].decode('utf-8'))
+
+def print_unknown(entry):
+    """Prepare string for unknown chunk of ITEPKG file"""
+    return "Unknown({}, {})".format(hex(entry.unknown1.integer), hex(entry.unknown2.integer))
+
+def print_end(entry):
+    """Prepare string for end chunk of ITEPKG file"""
+    return "End"
+
+printers = {Entry.Memory: print_smedia, Entry.Directory: print_dir,
+        Entry.File: print_file, Entry.Unknown: print_unknown,
+        Entry.End: print_end}
 
 class Action(Enum):
     FAIL = 0
