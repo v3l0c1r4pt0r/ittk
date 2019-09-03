@@ -78,6 +78,9 @@ def main(argv):
         if args.unpack == None:
             args.unpack = -1
 
+    if args.directory is None:
+        args.directory = os.getcwd()
+
     # open input file and read it
     fp = os.open(args.file, os.O_RDONLY)
     fsize = os.lseek(fp, 0, os.SEEK_END)
