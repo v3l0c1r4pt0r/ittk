@@ -24,7 +24,7 @@ class GenericEntry:
 class EndEntry(GenericEntry):
 
     def __init__(self):
-        pass
+        self.type = Entry.End
 
     def __bytes__(self):
         return b''
@@ -42,6 +42,7 @@ class EndEntry(GenericEntry):
 class MemoryEntry(GenericEntry):
 
     def __init__(self, address, content):
+        self.type = Entry.Memory
         if isinstance(address, uint32):
             self.address = address
         else:
@@ -73,6 +74,7 @@ class MemoryEntry(GenericEntry):
 class UnknownEntry(GenericEntry):
 
     def __init__(self, unknown1, unknown2):
+        self.type = Entry.Unknown
         if isinstance(unknown1, uint32):
             self.unknown1 = unknown1
         else:
@@ -103,6 +105,7 @@ class _FSEntry(GenericEntry):
     max32 = 256 ** 4 - 1
 
     def __init__(self, filename):
+        self.type = -1
         if isinstance(filename, vector):
             self.filename = filename
         else:
@@ -128,6 +131,10 @@ class _FSEntry(GenericEntry):
 
 class DirectoryEntry(_FSEntry):
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.type = Entry.Directory
+
     def from_bytes(b):
         filename, b = vector.from_bytes(0, FileEntry.max32, bytes, b,
                 little=True)
@@ -138,6 +145,7 @@ class FileEntry(_FSEntry):
 
     def __init__(self, filename, contents):
         super().__init__(filename)
+        self.type = Entry.File
         if isinstance(contents, vector):
             self.contents = contents
         else:
