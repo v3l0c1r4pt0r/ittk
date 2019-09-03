@@ -36,11 +36,11 @@ class Action(Enum):
     LIST = 1
     UNPACK = 2
 
-def do_fail(pkg):
+def do_fail(pkg, args):
     print('No action was selected, leaving', file=sys.stderr)
     sys.exit(1)
 
-def do_list(pkg):
+def do_list(pkg, args):
     print(' ITEPKG', end='')
     for e in pkg.entries:
         print('')
@@ -50,7 +50,7 @@ def do_list(pkg):
             print(' |-', type(e), end='')
     print('\r `- ')
 
-def do_unpack(pkg):
+def do_unpack(pkg, args):
     raise Exception('Not implemented')
 
 action_handlers = {Action.FAIL: do_fail, Action.LIST: do_list, Action.UNPACK: do_unpack}
@@ -90,7 +90,7 @@ def main(argv):
         print("Superfluous bytes after ITEPKG. Make sure you gave proper ITEPKG file", file=sys.stderr)
 
     # do selected action
-    action_handlers[action](pkg)
+    action_handlers[action](pkg, args)
 
     # TODO: do stuff
 
