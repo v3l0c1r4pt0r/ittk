@@ -44,16 +44,8 @@ def do_list(pkg):
     print(' ITEPKG', end='')
     for e in pkg.entries:
         print('')
-        if isinstance(e, itepkg.entries.MemoryEntry):
-            print(' |- SMEDIA(',hex(e.address.integer),')', end='')
-        elif isinstance(e, itepkg.entries.DirectoryEntry):
-            print(' |- Dir(',e.filename.array[0].decode('utf-8'),')', end='')
-        elif isinstance(e, itepkg.entries.FileEntry):
-            print(' |- File(',e.filename.array[0].decode('utf-8'),')', end='')
-        elif isinstance(e, itepkg.entries.UnknownEntry):
-            print(' |- Unknown(',hex(e.unknown1.integer),hex(e.unknown2.integer),')', end='')
-        elif isinstance(e, itepkg.entries.EndEntry):
-            print(' |- End', end='')
+        if hasattr(e, 'type'):
+            print(' |- {}'.format(printers[e.type](e)), end='')
         else:
             print(' |-', type(e), end='')
     print('\r `- ')
