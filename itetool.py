@@ -69,7 +69,6 @@ def main(argv):
             type=str, metavar="DIR")
 
     args = parser.parse_args()
-    print(args)
     action = Action.FAIL
     if args.list == True:
         action = Action.LIST
