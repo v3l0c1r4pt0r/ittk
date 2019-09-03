@@ -65,7 +65,7 @@ def main(argv):
             help="Unpack element of ID to directory (default=-1=all)",
             default=-1, metavar="ID", nargs='?')
 
-    parser.add_argument("-d", "--directory", help="Unpack to DIR, instead CWD",
+    parser.add_argument("-d", "--directory", help="Unpack to DIR, instead of CWD",
             type=str, metavar="DIR")
 
     args = parser.parse_args()
