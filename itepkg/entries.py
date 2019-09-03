@@ -36,7 +36,7 @@ class EndEntry(GenericEntry):
         return 0
 
     def from_bytes(b):
-        return EndEntry, b
+        return EndEntry(), b
 
 
 class MemoryEntry(GenericEntry):
@@ -127,7 +127,11 @@ class _FSEntry(GenericEntry):
 
 
 class DirectoryEntry(_FSEntry):
-    pass
+
+    def from_bytes(b):
+        filename, b = vector.from_bytes(0, FileEntry.max32, bytes, b,
+                little=True)
+        return DirectoryEntry(filename), b
 
 
 class FileEntry(_FSEntry):
