@@ -25,6 +25,24 @@ def get_data_object(entry):
     else:
         return None
 
+def process_entry(outdir, i ,e):
+    """Process single entry of ITEPKG image"""
+    fname = generate_fname(outdir, i, e)
+    if fname is None:
+        # skip silently files, we don't know how to name
+        return
+
+    # create any directories required
+    if e.type != Entry.Directory:
+        dirname = os.path.dirname(fname)
+    else:
+        dirname = fname
+    os.makedirs(dirname, exist_ok=True)
+
+    data = get_data_object(e)
+    if data is not None:
+        write_file(fname, data)
+
 def write_file(fname, data):
     """Write bytes object to file"""
     fp = os.open(fname, os.O_CREAT | os.O_WRONLY | os.O_TRUNC)
@@ -83,21 +101,12 @@ def do_unpack(pkg, args):
         raise Exception(
                 "Path {} already exists and is not directory".format(outdir))
 
-    for i, e in enumerate(pkg.entries):
-        fname = generate_fname(outdir, i, e)
-        if fname is None:
-            continue
-
-        # create any directories required
-        if e.type != Entry.Directory:
-            dirname = os.path.dirname(fname)
-        else:
-            dirname = fname
-        os.makedirs(dirname, exist_ok=True)
-
-        data = get_data_object(e)
-        if data is not None:
-            write_file(fname, data)
+    if args.unpack != -1:
+        i = int(args.unpack)
+        process_entry(outdir, i, pkg.entries[i])
+    else:
+        for i, e in enumerate(pkg.entries):
+            process_entry(outdir, i, e)
 
 action_handlers = {Action.FAIL: do_fail, Action.LIST: do_list, Action.UNPACK: do_unpack}
 
