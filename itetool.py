@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Tool for handling of ITEPKG firmware file
+import argparse
 import itepkg.itepkg
 import os
 import sys
@@ -22,10 +24,31 @@ def do_unpack(pkg):
 action_handlers = {Action.FAIL: do_fail, Action.LIST: do_list, Action.UNPACK: do_unpack}
 
 def main(argv):
-    fname = argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file", help="ITEPKG file to work on")
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-l", "--list", help="List container elements", action="store_true")
+    group.add_argument("-u", "--unpack",
+            help="Unpack element of ID to directory (default=-1=all)",
+            default=-1, metavar="ID", nargs='?')
+
+    parser.add_argument("-d", "--directory", help="Unpack to DIR, instead CWD",
+            type=str, metavar="DIR")
+
+    args = parser.parse_args()
+    print(args)
+    action = Action.FAIL
+    if args.list == True:
+        action = Action.LIST
+    elif args.unpack != -1:
+        action = Action.UNPACK
+        # if unpack given, default to -1
+        if args.unpack == None:
+            args.unpack = -1
 
     # open input file and read it
-    fp = os.open(fname, os.O_RDONLY)
+    fp = os.open(args.file, os.O_RDONLY)
     fsize = os.lseek(fp, 0, os.SEEK_END)
     os.lseek(fp, 0, os.SEEK_SET)
     b = os.read(fp, fsize)
