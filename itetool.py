@@ -25,6 +25,12 @@ def get_data_object(entry):
     else:
         return None
 
+def write_file(fname, data):
+    """Write bytes object to file"""
+    fp = os.open(fname, os.O_CREAT | os.O_WRONLY | os.O_TRUNC)
+    os.write(fp, data)
+    os.close(fp)
+
 def print_smedia(entry):
     """Prepare string for SMEDIA chunk of ITEPKG file"""
     return "SMEDIA({})".format(hex(entry.address.integer))
