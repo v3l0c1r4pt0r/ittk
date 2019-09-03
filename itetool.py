@@ -58,6 +58,27 @@ def do_list(pkg, args):
     print('\r `- ')
 
 def do_unpack(pkg, args):
+    outdir = args.directory
+    if not os.path.exists(outdir):
+        os.mkdir(outdir)
+
+    if os.path.isfile(outdir):
+        raise Exception(
+                "Path {} already exists and is not directory".format(outdir))
+
+    for i, e in enumerate(pkg.entries):
+        fname = generate_fname(outdir, i, e)
+        if fname is None:
+            continue
+
+        # create any directories required
+        if e.type != Entry.Directory:
+            dirname = os.path.dirname(fname)
+        else:
+            dirname = fname
+        os.makedirs(dirname, exist_ok=True)
+        print(fname)
+
     raise Exception('Not implemented')
 
 action_handlers = {Action.FAIL: do_fail, Action.LIST: do_list, Action.UNPACK: do_unpack}
