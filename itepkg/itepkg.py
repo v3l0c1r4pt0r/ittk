@@ -36,6 +36,9 @@ class ITEPKG:
         return '{magic = %s, unknown = %s, entries = [%s]}' % (self.magic,
                 self.header, entries)
 
+    def __repr__(self):
+        raise Exception('Not implemented')
+
     def __len__(self):
         return len(bytes(self))
 
