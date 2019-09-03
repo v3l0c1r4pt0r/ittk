@@ -16,6 +16,15 @@ def generate_fname(dirname, i, entry):
     else:
         return None
 
+def get_data_object(entry):
+    """Returns data object, if any, contained in entry object"""
+    if isinstance(entry, itepkg.entries.MemoryEntry):
+        return entry.content
+    elif isinstance(entry, itepkg.entries.FileEntry):
+        return bytes(entry.contents)[4:]
+    else:
+        return None
+
 def print_smedia(entry):
     """Prepare string for SMEDIA chunk of ITEPKG file"""
     return "SMEDIA({})".format(hex(entry.address.integer))
