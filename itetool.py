@@ -13,6 +13,8 @@ def generate_fname(dirname, i, entry):
         return "{}/{}.smedia".format(dirname, i)
     elif isinstance(entry, itepkg.entries._FSEntry):
         return "{}/fs/{}".format(dirname, entry.filename.array[0][:-1].decode('utf-8'))
+    else:
+        return None
 
 def print_smedia(entry):
     """Prepare string for SMEDIA chunk of ITEPKG file"""
