@@ -2,6 +2,24 @@
 import itepkg.itepkg
 import os
 import sys
+from enum import Enum
+
+class Action(Enum):
+    FAIL = 0
+    LIST = 1
+    UNPACK = 2
+
+def do_fail(pkg):
+    print('No action was selected, leaving', file=sys.stderr)
+    sys.exit(1)
+
+def do_list(pkg):
+    raise Exception('Not implemented')
+
+def do_unpack(pkg):
+    raise Exception('Not implemented')
+
+action_handlers = {Action.FAIL: do_fail, Action.LIST: do_list, Action.UNPACK: do_unpack}
 
 def main(argv):
     fname = argv[1]
