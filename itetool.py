@@ -94,9 +94,10 @@ def do_unpack(pkg, args):
         else:
             dirname = fname
         os.makedirs(dirname, exist_ok=True)
-        print(fname)
 
-    raise Exception('Not implemented')
+        data = get_data_object(e)
+        if data is not None:
+            write_file(fname, data)
 
 action_handlers = {Action.FAIL: do_fail, Action.LIST: do_list, Action.UNPACK: do_unpack}
 
